@@ -77,9 +77,9 @@ GAME OVER!
 "@
 
 	$levels = @{
-		"1" = @{ max = 6; minlength = 3; maxlength = 6; words = import-csv "C:\temp\words_easy_categories.csv"; setting = "Easy" }
-		"2" = @{ max = 6; minlength = 6; maxlength = 8; words = import-csv "C:\temp\words_easy_categories.csv"; setting = "Normal" }
-		"3" = @{ max = 4; minlength = 8; maxlength = 20; words = import-csv "C:\temp\words_easy_categories.csv"; setting = "Hard" }
+		"1" = @{ max = 6; minlength = 2; maxlength = 6; words = import-csv "C:\temp\words_categories.csv"; setting = "Easy" }
+		"2" = @{ max = 6; minlength = 2; maxlength = 25; words = import-csv "C:\temp\words_categories.csv"; setting = "Normal" }
+		"3" = @{ max = 4; minlength = 2; maxlength = 50; words = import-csv "C:\temp\words_categories.csv"; setting = "Hard" }
 	}
 
 	do {
@@ -94,12 +94,14 @@ GAME OVER!
 	
 	foreach ($entry in $levels[$difficulty]["words"]) {
 		$category = $entry.category
-		$word = $entry.word
+		$word = ($entry.word).tolower()
 		$wordhash[$category] += "$word,"
 	}
 	
 	$randomcat = $wordhash.keys | get-random
-	$randomwrd = ($wordhash[$randomcat]).split(",")
+	$randomwrd = ($wordhash[$randomcat]).trimend(",")
+	$randomwrd = $randomwrd.split(",")
+	
 	$max = $levels[$difficulty]["max"]
 	
 	$wlist = $randomwrd | ? { $_.length -ge $levels[$difficulty]["minlength"] -and $_.length -le $levels[$difficulty]["maxlength"] }
@@ -117,6 +119,14 @@ GAME OVER!
         write-host "   Wins: $($wins)   Losses: $($losses)   Turns Remaining: $($max - $attempts)" -fore cyan
         write-host ("=" * 47) -fore cyan
         
+		if ($warray -contains " ") {
+			for ($i = 0; $i -lt $warray.length; $i++) {
+				if ($warray[$i] -match " ") {
+					$dword[$i] = " "
+				}
+			}
+		}
+		
 		write-host "`n$($man[$attempts])"
 		write-host "Difficulity: $($levels[$difficulty]["setting"])"
 		write-host "Category: $($randomcat)"
