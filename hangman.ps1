@@ -137,7 +137,7 @@ GAME OVER!
 "@
 
 	$levels = @{
-		"1" = @{ max = 6; minlength = 2; maxlength = 6; words = import-csv "$worddir\$wordfile"; setting = "Easy" }
+		"1" = @{ max = 6; minlength = 2; maxlength = 15; words = import-csv "$worddir\$wordfile"; setting = "Easy" }
 		"2" = @{ max = 6; minlength = 2; maxlength = 25; words = import-csv "$worddir\$wordfile"; setting = "Normal" }
 		"3" = @{ max = 4; minlength = 2; maxlength = 50; words = import-csv "$worddir\$wordfile"; setting = "Hard" }
 	}
